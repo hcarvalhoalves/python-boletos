@@ -6,7 +6,7 @@ from datetime import date
 ITAU_TEST_DATA = {
     'valor_documento': 64.00,
     'nosso_numero': "00001001",
-    'numero_documento': "00002",
+    'numero_documento': "00001",
     'data_vencimento': date(2011, 6, 1),
     'cedente': 'Rede Colibri Desenvolvimento e Serviços de Internet LTDA',
     'cedente_agencia': '8450',

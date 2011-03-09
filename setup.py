@@ -4,6 +4,7 @@ from setuptools import setup
 setup(
     name = "python-boletos",
     version = "0.1",
+    package_dir = {'boletos': 'src/boletos'},
     packages = ['boletos', 'boletos.bancos'],
     include_package_data=True,
     install_requires=['reportlab'],

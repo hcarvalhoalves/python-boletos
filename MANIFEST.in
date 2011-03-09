@@ -1,1 +1,1 @@
-recursive-include boletos/bancos/media *
+recursive-include src/boletos/bancos/media *
