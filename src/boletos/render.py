@@ -313,6 +313,7 @@ def render_to_pdf(boleto):
 
 
 def _render_to_ghostscript(boleto, format):
+    buffer = None
     try:
         buffer = render_to_pdf(boleto)
         process = subprocess.Popen(GHOSTSCRIPT_COMMAND % format,
@@ -322,7 +323,8 @@ def _render_to_ghostscript(boleto, format):
                                    stderr=subprocess.PIPE)
         stdout, stderr = process.communicate(input=buffer.getvalue())
     finally:
-        buffer.close()
+        if buffer:
+            buffer.close()
     return StringIO(stdout)
 
 

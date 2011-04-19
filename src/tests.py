@@ -10,7 +10,7 @@ ITAU_TEST_DATA = {
     'data_vencimento': date(2011, 6, 1),
     'cedente': 'Rede Colibri Desenvolvimento e Serviços de Internet LTDA',
     'cedente_agencia': '8450',
-    'cedente_conta': '191874',
+    'cedente_conta': '091874',
     'instrucoes': u"""
     Cobrar multa de 2% após o vencimento.
     Não receber após 30 dias da data de vencimento.
@@ -38,18 +38,18 @@ class BoletoItauValidationTest(unittest.TestCase):
 
     def test_cedente_agencia_codigo(self):
         self.assertEqual(
-            self.boleto.cedente_agencia_codigo, '8450/19187-4'
+            self.boleto.cedente_agencia_codigo, '8450/09187-4'
         )
 
     def test_nosso_numero(self):
         self.assertEqual(
-            self.boleto.nosso_numero_formatado, '175/00001001-1'
+            self.boleto.nosso_numero_formatado, '175/00001001-2'
         )
 
     def test_linha_digitavel(self):
         self.assertEqual(
             self.boleto.linha_digitavel,
-            '34191.75009  00100.118454  01918.740000  8  49850000006400'
+            '34191.75009  00100.128453  00918.740002  3  49850000006400'
         )
 
     def test_codigo_barras(self):
@@ -58,7 +58,7 @@ class BoletoItauValidationTest(unittest.TestCase):
         )
         self.assertEqual(
             self.boleto.codigo_barras,
-            '34198498500000064001750000100118450191874000'
+            '34193498500000064001750000100128450091874000'
         )
 
 
