@@ -1,5 +1,5 @@
 # coding: utf-8
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 import os
 
 def _split_lines(s):
@@ -25,8 +25,14 @@ class Boleto(object):
         self.cedente_agencia = kwargs.pop('cedente_agencia', '').zfill(4)[:4]
         self.cedente_conta = kwargs.pop('cedente_conta', '').zfill(6)[:6]
         self.data_vencimento = kwargs.pop('data_vencimento', date.today() + timedelta(weeks=1))
+        if isinstance(self.data_vencimento, datetime):
+            self.data_vencimento = self.data_vencimento.date()
         self.data_documento = kwargs.pop('data_documento', date.today())
-        self.data_processamento = kwargs.pop('data_documento', date.today())
+        if isinstance(self.data_documento, datetime):
+            self.data_documento = self.data_documento.date()
+        self.data_processamento = kwargs.pop('data_processamento', date.today())
+        if isinstance(self.data_processamento, datetime):
+            self.data_processamento = self.data_processamento.date()
         self.demonstrativo = _split_lines(kwargs.pop('demonstrativo', u"")) # 12 lines, 90 cols
         self.instrucoes = _split_lines(kwargs.pop('instrucoes', u"")) # 7 lines, 90 cols
         self.sacado = _split_lines(kwargs.pop('sacado', "")) # 3 lines, 80 cols
