@@ -41,34 +41,20 @@ class BoletoItauValidationTest(unittest.TestCase):
         self.boleto = itau.BoletoItau(**ITAU_BOLETO)
 
     def test_valor_digitavel(self):
-        self.assertEqual(
-            self.boleto.valor_digitavel, '0000006400'
-        )
+        self.assertEqual(self.boleto.valor_digitavel, '0000006400')
 
     def test_cedente_agencia_codigo(self):
-        self.assertEqual(
-            self.boleto.cedente_agencia_codigo, '8450/09187-4'
-        )
+        self.assertEqual(self.boleto.cedente_agencia_codigo, '8450/09187-4')
 
     def test_nosso_numero(self):
-        self.assertEqual(
-            self.boleto.nosso_numero_formatado, '175/00001001-2'
-        )
+        self.assertEqual(self.boleto.nosso_numero_formatado, '175/00001001-2')
 
     def test_linha_digitavel(self):
-        self.assertEqual(
-            self.boleto.linha_digitavel,
-            '34191.75009  00100.128453  00918.740002  3  49850000006400'
-        )
+        self.assertEqual(self.boleto.linha_digitavel, '34191.75009  00100.128453  00918.740002  3  49850000006400')
 
     def test_codigo_barras(self):
-        self.assertEqual(
-            len(self.boleto.codigo_barras), 44
-        )
-        self.assertEqual(
-            self.boleto.codigo_barras,
-            '34193498500000064001750000100128450091874000'
-        )
+        self.assertEqual(len(self.boleto.codigo_barras), 44)
+        self.assertEqual(self.boleto.codigo_barras, '34193498500000064001750000100128450091874000')
 
 
 class RenderTest(object):
