@@ -11,8 +11,8 @@ ITAU_BOLETO = {
     'numero_documento': "00001",
     'data_vencimento': date(2011, 6, 1),
     'cedente': 'Rede Colibri Desenvolvimento e Serviços de Internet LTDA',
-    'cedente_agencia': '8450',
-    'cedente_conta': '091874',
+    'cedente_agencia': 8450,
+    'cedente_conta': 91874,
     'instrucoes': u"""
     Cobrar multa de 2% após o vencimento.
     Não receber após 30 dias da data de vencimento.

@@ -13,8 +13,10 @@ from reportlab.graphics.barcode import createBarcodeDrawing
 import subprocess
 
 GHOSTSCRIPT_COMMAND = """
-gs -q -dBATCH -dNOPAUSE -sDEVICE=%s -r300 -sOutputFile=- -
+gs -q -dBATCH -dNOPAUSE -sDEVICE=%s -r%d -sOutputFile=- -
 """
+
+GHOSTSCRIPT_DEFAULT_RESOLUTION = 300
 
 DATE_FORMAT = "%d/%m/%Y"
 
@@ -312,11 +314,11 @@ def render_to_pdf(boleto, layout=BoletoLayout):
     return layout(boleto, StringIO()).save()
 
 
-def render_to_ghostscript(format, boleto, layout):
+def render_to_ghostscript(format, resolution, boleto, layout):
     buffer = None
     try:
         buffer = render_to_pdf(boleto, layout)
-        process = subprocess.Popen(GHOSTSCRIPT_COMMAND % format,
+        process = subprocess.Popen(GHOSTSCRIPT_COMMAND % (format, resolution),
                                    shell=True,
                                    stdin=subprocess.PIPE,
                                    stdout=subprocess.PIPE,
@@ -328,9 +330,13 @@ def render_to_ghostscript(format, boleto, layout):
     return StringIO(stdout)
 
 
-def render_to_png(boleto, layout=BoletoLayout):
-    return render_to_ghostscript('png16', boleto, layout)
+def render_to_png(boleto,
+                  layout=BoletoLayout,
+                  resolution=GHOSTSCRIPT_DEFAULT_RESOLUTION):
+    return render_to_ghostscript('png16', resolution, boleto, layout)
 
 
-def render_to_jpg(boleto, layout=BoletoLayout):
-    return render_to_ghostscript('jpeg', boleto, layout)
+def render_to_jpg(boleto,
+                  layout=BoletoLayout,
+                  resolution=GHOSTSCRIPT_DEFAULT_RESOLUTION):
+    return render_to_ghostscript('jpeg', resolution, boleto, layout)

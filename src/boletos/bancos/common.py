@@ -30,12 +30,12 @@ class Boleto(object):
 
     def __init__(self, *args, **kwargs):
         self.valor_documento = kwargs.pop('valor_documento', 0)
-        self.nosso_numero = kwargs.pop('nosso_numero', 0).zfill(8)[:8]
+        self.nosso_numero = str(kwargs.pop('nosso_numero', 0)).zfill(8)[:8]
         self.numero_documento = kwargs.pop('numero_documento', 0)
         self.especie_documento = kwargs.pop('especie_documento', '')
         self.cedente = kwargs.pop('cedente', '')
-        self.cedente_agencia = kwargs.pop('cedente_agencia', '').zfill(4)[:4]
-        self.cedente_conta = kwargs.pop('cedente_conta', '').zfill(6)[:6]
+        self.cedente_agencia = str(kwargs.pop('cedente_agencia', '')).zfill(4)[:4]
+        self.cedente_conta = str(kwargs.pop('cedente_conta', '')).zfill(6)[:6]
         self.data_vencimento = kwargs.pop('data_vencimento', date.today() + timedelta(weeks=1))
         if isinstance(self.data_vencimento, datetime):
             self.data_vencimento = self.data_vencimento.date()
