@@ -1,10 +1,10 @@
 # coding: utf-8
-from common import Boleto
+from common import Boleto, CnabParser
 
 
 class BoletoItau(Boleto):
-    banco = "341"
-    carteira = "175"
+    banco = 341
+    carteira = 175
     local_pagamento = u"Até o vencimento pague preferencialmente no Itaú"
 
     def _dac_nosso_numero(self):
@@ -111,3 +111,7 @@ class BoletoItau(Boleto):
             self.cedente_agencia,
             self.cedente_conta,
         )
+
+
+class CnabParserItau(CnabParser):
+    pass

@@ -1,6 +1,18 @@
 # coding: utf-8
 from datetime import date, datetime, timedelta
+from decimal import Decimal
 import os
+import sys
+
+
+DATE_PARSE_FORMAT = '%d%m%y'
+CURRENCY_PARSE_FORMAT = '%d.%d'
+
+def _parse_date(s):
+    return datetime.strptime(s, DATE_PARSE_FORMAT).date()
+
+def _parse_currency(s):
+    return Decimal(CURRENCY_PARSE_FORMAT % (int(s[:-2]), int(s[-2:])))
 
 def _split_lines(s):
     return filter(None, map(lambda l: l.strip(' '), s.split('\n')))
@@ -40,11 +52,10 @@ class Boleto(object):
     def _modulo10(self, num):
         soma = 0
         peso = 2
-        for i in range(len(num)-1, -1, -1):
-            parcial = int(num[i]) * peso
+        for i in range(len(str(num))-1, -1, -1):
+            parcial = int(str(num)[i]) * peso
             if parcial > 9:
-                s = "%d" % parcial
-                parcial = int(s[0]) + int(s[1])
+                parcial = int(str(parcial)[0]) + int(str(parcial)[1])
             soma += parcial
             if peso == 2:
                 peso = 1
@@ -60,8 +71,8 @@ class Boleto(object):
     def _modulo11(self, num):
         soma = 0
         peso = 2
-        for i in range(len(num)-1, -1, -1):
-            parcial = int(num[i]) * peso
+        for i in range(len(str(num))-1, -1, -1):
+            parcial = int(str(num)[i]) * peso
             soma += parcial
             if peso == 9:
                 peso = 2
@@ -106,3 +117,57 @@ class Boleto(object):
     @property
     def codigo_barras(self):
         raise NotImplementedError()
+
+
+class CnabParsingError(Exception):
+    pass
+
+
+class CnabParser(object):
+
+    def __init__(self, filename):
+        with open(filename, 'r') as fd:
+            self._parse(fd.readlines())
+
+    def _parse(self, data):
+        try:
+            self.header = self._parse_header(data[0])
+            self.transactions = self._parse_transactions(data[1:-1])
+            self.trailer = self._parse_trailer(data[-1])
+        except Exception, e:
+            raise CnabParsingError(unicode(e)), None, sys.exc_info()[2]
+
+    @staticmethod
+    def _parse_header(h):
+        return {
+            'agencia': int(h[26:30]),
+            'conta': int(h[33:38]),
+            'data_geracao': _parse_date(h[94:100]),
+            'data_credito': _parse_date(h[113:119]),
+            'num_arquivo_retorno': int(h[108:113]),
+        }
+
+    def _parse_transactions(self, transactions):
+        return [self._parse_transaction(t) for t in transactions]
+
+    @staticmethod
+    def _parse_transaction(t):
+        return {
+            'nosso_numero': int(t[62:70]),
+            'carteira': int(t[82:85]),
+            'valor_documento': _parse_currency(t[152:165]),
+            'valor_tarifa': _parse_currency(t[175:188]),
+            'valor_descontos': _parse_currency(t[240:253]),
+            'valor_credito': _parse_currency(t[253:266]),
+            'valor_juros': _parse_currency(t[266:279]),
+            'data_vencimento': _parse_date(t[146:152]),
+            'data_ocorrencia': _parse_date(t[110:116]),
+            'data_credito': _parse_date(t[295:301]),
+        }
+
+    @staticmethod
+    def _parse_trailer(t):
+        return {
+            'registros_total': int(t[212:220]),
+            'valor_total_documento': _parse_currency(t[220:234]),
+        }

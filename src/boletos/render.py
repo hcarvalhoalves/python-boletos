@@ -212,7 +212,7 @@ class BoletoLayout(object):
         self.canvas.drawString(self.width - (45*mm) + self.space, y + self.deltaTitle, '(=) Valor documento')
 
         self.canvas.setFont('Helvetica', self.fontSizeValue)
-        self.canvas.drawString((30*mm)+self.space, y + self.space, self.boleto.carteira)
+        self.canvas.drawString((30*mm)+self.space, y + self.space, unicode(self.boleto.carteira))
         self.canvas.drawString(((30+20)*mm)+self.space, y + self.space, self.boleto.especie)
         self.canvas.drawString(((30+20+20)*mm)+self.space, y + self.space, self.boleto.quantidade)
         valor = _price_format(self.boleto.valor_documento)

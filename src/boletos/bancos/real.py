@@ -3,8 +3,8 @@ from common import Boleto
 
 
 class BoletoBancoReal(Boleto):
-    banco = "356"
-    carteira = "57"
+    banco = 356
+    carteira = 57
 
     def _digitao_cobranca(self):
         num = "%s%s%s" % (self.nosso_numero, self.cedente_agencia, self.cedente_conta)
