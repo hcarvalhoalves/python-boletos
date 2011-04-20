@@ -308,14 +308,14 @@ class BoletoLayout(object):
         return self.file
 
 
-def render_to_pdf(boleto):
-    return BoletoLayout(boleto, StringIO()).save()
+def render_to_pdf(boleto, layout=BoletoLayout):
+    return layout(boleto, StringIO()).save()
 
 
-def _render_to_ghostscript(boleto, format):
+def render_to_ghostscript(format, boleto, layout):
     buffer = None
     try:
-        buffer = render_to_pdf(boleto)
+        buffer = render_to_pdf(boleto, layout)
         process = subprocess.Popen(GHOSTSCRIPT_COMMAND % format,
                                    shell=True,
                                    stdin=subprocess.PIPE,
@@ -328,9 +328,9 @@ def _render_to_ghostscript(boleto, format):
     return StringIO(stdout)
 
 
-def render_to_png(boleto):
-    return _render_to_ghostscript(boleto, 'png16')
+def render_to_png(boleto, layout=BoletoLayout):
+    return render_to_ghostscript('png16', boleto, layout)
 
 
-def render_to_jpg(boleto):
-    return _render_to_ghostscript(boleto, 'jpeg')
+def render_to_jpg(boleto, layout=BoletoLayout):
+    return render_to_ghostscript('jpeg', boleto, layout)
