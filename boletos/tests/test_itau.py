@@ -1,4 +1,7 @@
 # coding: utf-8
+from ..bancos import itau
+from ..render import render_to_pdf, render_to_png, render_to_jpg
+
 from datetime import date
 from decimal import Decimal
 import unittest
@@ -37,7 +40,6 @@ def _get_fixture_path(filename):
 class BoletoItauValidationTest(unittest.TestCase):
 
     def setUp(self):
-        from boletos.bancos import itau
         self.boleto = itau.BoletoItau(**ITAU_BOLETO)
 
     def test_valor_digitavel(self):
@@ -64,21 +66,17 @@ class RenderTest(object):
             f.write(method(self.boleto).getvalue())
 
     def test_render_to_pdf(self):
-        from boletos.render import render_to_pdf
         self._test_render(render_to_pdf, '/tmp/%s-test.pdf')
 
     def test_render_to_png(self):
-        from boletos.render import render_to_png
         self._test_render(render_to_png, '/tmp/%s-test.png')
 
     def test_render_to_jpg(self):
-        from boletos.render import render_to_jpg
         self._test_render(render_to_jpg, '/tmp/%s-test.jpg')
 
 
 class BoletoItauRenderTest(RenderTest, unittest.TestCase):
     def setUp(self):
-        from boletos.bancos import itau
         self.boleto = itau.BoletoItau(**ITAU_BOLETO)
 
 
@@ -94,7 +92,6 @@ class CnabItauParseTest(CnabParseTest, unittest.TestCase):
     RET_FILENAME = ITAU_RET_FILENAME
 
     def _parse(self, fixture):
-        from boletos.bancos import itau
         self.parser = itau.CnabParserItau(fixture)
 
     def test_parse_header(self):

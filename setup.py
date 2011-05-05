@@ -3,11 +3,11 @@ from setuptools import setup
 
 setup(
     name = "python-boletos",
-    version = "0.2.2",
-    package_dir = {'': 'src'},
+    version = "0.3.0",
     packages = ['boletos', 'boletos.bancos'],
-    include_package_data=True,
     install_requires=['reportlab'],
+    test_suite='boletos.tests.run_tests',
+    include_package_data=True,
     zip_safe=False,
     author = "Henrique Carvalho Alves",
     author_email = "hcarvalhoalves@gmail.com",
