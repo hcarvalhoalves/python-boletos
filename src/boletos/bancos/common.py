@@ -9,7 +9,10 @@ DATE_PARSE_FORMAT = '%d%m%y'
 CURRENCY_PARSE_FORMAT = '%d.%d'
 
 def _parse_date(s):
-    return datetime.strptime(s, DATE_PARSE_FORMAT).date()
+    try:
+        return datetime.strptime(s, DATE_PARSE_FORMAT).date()
+    except ValueError:
+        return None
 
 def _parse_currency(s):
     return Decimal(CURRENCY_PARSE_FORMAT % (int(s[:-2]), int(s[-2:])))
