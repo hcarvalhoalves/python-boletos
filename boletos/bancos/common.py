@@ -116,9 +116,9 @@ class Boleto(object):
     @property
     def fator_vencimento(self):
         try:
-            return (data_vencimento - self.data_base).days
+            return (self.data_vencimento - self.data_base).days
         except TypeError:
-            return (data_vencimento.date() - self.data_base).days
+            return (self.data_vencimento.date() - self.data_base).days
 
     @property
     def codigo_barras(self):
