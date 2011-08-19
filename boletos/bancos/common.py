@@ -6,7 +6,7 @@ import sys
 
 
 DATE_PARSE_FORMAT = '%d%m%y'
-CURRENCY_PARSE_FORMAT = '%d.%d'
+CURRENCY_PARSE_FORMAT = '%d.%.2d'
 
 def _parse_date(s):
     try:
