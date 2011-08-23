@@ -6,7 +6,7 @@ import sys
 
 
 DATE_PARSE_FORMAT = '%d%m%y'
-CURRENCY_PARSE_FORMAT = '%d.%d'
+CURRENCY_PARSE_FORMAT = '%d.%.2d'
 
 def _parse_date(s):
     try:
@@ -115,7 +115,10 @@ class Boleto(object):
 
     @property
     def fator_vencimento(self):
-        return (self.data_vencimento - self.data_base).days
+        try:
+            return (self.data_vencimento - self.data_base).days
+        except TypeError:
+            return (self.data_vencimento.date() - self.data_base).days
 
     @property
     def codigo_barras(self):
