@@ -51,6 +51,8 @@ class Boleto(object):
         self.demonstrativo = _split_lines(kwargs.pop('demonstrativo', u"")) # 12 lines, 90 cols
         self.instrucoes = _split_lines(kwargs.pop('instrucoes', u"")) # 7 lines, 90 cols
         self.sacado = _split_lines(kwargs.pop('sacado', "")) # 3 lines, 80 cols
+        self.sacador_avalista = kwargs.pop('sacador_avalista', '')
+        self.endereco_cedente = kwargs.pop('endereco_cedente', '') 
 
     def _modulo10(self, num):
         soma = 0
@@ -71,7 +73,7 @@ class Boleto(object):
             modulo10 = 10 - resto10
         return modulo10
 
-    def _modulo11(self, num):
+    def __modulo_11_base__(self, num):
         soma = 0
         peso = 2
         for i in range(len(str(num))-1, -1, -1):
@@ -81,12 +83,13 @@ class Boleto(object):
                 peso = 2
             else:
                 peso += 1
-        resto11 = soma % 11
-        if resto11 == 0 or resto11 == 1:
-            modulo11 = 1
-        else:
-            modulo11 = 11 - resto11
-        return modulo11
+        return 11 - (soma % 11)
+
+    def _modulo11(self, num):
+        resultado = self.__modulo_11_base__(num)
+        if resultado > 9:
+            return 1
+        return resultado
 
     @property
     def logo_path(self):

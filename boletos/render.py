@@ -1,4 +1,5 @@
 # coding: utf-8
+
 try:
     from cStringIO import StringIO
 except ImportError:
@@ -70,16 +71,38 @@ class BoletoLayout(object):
 
         # Horizontal Lines
         self.canvas.setLineWidth(1)
-        self._horizontal_line(0, linhaInicial * self.heightLine, self.width)
+        self._horizontal_line(0, (linhaInicial - 1) * self.heightLine, self.width)
+        self._horizontal_line(0, (linhaInicial + 0) * self.heightLine, self.width)
         self._horizontal_line(0, (linhaInicial + 1) * self.heightLine, self.width)
         self.canvas.setLineWidth(2)
         self._horizontal_line(0, (linhaInicial + 2) * self.heightLine, self.width)
 
         # Vertical Lines
         self.canvas.setLineWidth(1)
-        self._vertical_line(self.width - (45 * mm), (linhaInicial + 0) * self.heightLine, 2 * self.heightLine)
-        self._vertical_line(self.width - (45 * mm) - (30 * mm), (linhaInicial + 0) * self.heightLine, 2 * self.heightLine)
-        self._vertical_line(self.width - (45 * mm) - (30 * mm) - (30*mm), (linhaInicial + 0) * self.heightLine, 2 * self.heightLine)
+
+        posY = ( (linhaInicial + 2) * self.heightLine )
+
+        posX = self.width - (35 * mm)
+        self.canvas.line(posX, posY, posX, posY - self.heightLine )
+
+        posX = posX - (30 * mm ) 
+        self.canvas.line(posX, posY, posX, posY - self.heightLine )
+
+        posX = posX - (40 * mm )
+        self.canvas.line(posX, posY, posX, posY - self.heightLine )
+
+        posY =  posY - ( self.heightLine * 2 )
+
+        posX = self.width - (35 * mm)
+        self.canvas.line(posX, posY, posX, posY - self.heightLine )
+
+        posX = posX - (30 * mm )
+        self.canvas.line(posX, posY, posX, posY - self.heightLine )
+
+        posX = posX - (40 * mm )
+        self.canvas.line(posX, posY, posX, posY - self.heightLine )
+
+
 
         # Head
         self.canvas.setLineWidth(2)
@@ -92,43 +115,47 @@ class BoletoLayout(object):
         self.canvas.setFont('Helvetica-Bold', 18)
         self.canvas.drawCentredString(50*mm, (linhaInicial + 2) * self.heightLine + 3, self.boleto.banco_dv)
         self.canvas.setFont('Helvetica-Bold', 10)
-        self.canvas.drawRightString(self.width, (linhaInicial + 2) * self.heightLine + 3, 'Recibo do Sacado')
+        self.canvas.drawRightString(self.width, (linhaInicial + 2) * self.heightLine + 3, 'Recibo do Pagador')
 
         # Titles
         self.canvas.setFont('Helvetica', 6)
         self.deltaTitle = self.heightLine - (6 + 1)
 
-        self.canvas.drawString(0, (((linhaInicial + 1)*self.heightLine)) + self.deltaTitle, 'Cedente')
-        self.canvas.drawString(self.width - (45 * mm) - (30 * mm) - (30 * mm) + self.space, (((linhaInicial + 1) * self.heightLine)) + self.deltaTitle, 'Agência/Código Cedente')
-        self.canvas.drawString(self.width - (45 * mm) - (30 * mm) + self.space, (((linhaInicial + 1)*self.heightLine)) + self.deltaTitle, 'Data Documento')
-        self.canvas.drawString(self.width - (45 * mm) + self.space, (((linhaInicial + 1)*self.heightLine)) + self.deltaTitle, 'Vencimento')
+        self.canvas.drawString(0, (((linhaInicial + 1)*self.heightLine)) + self.deltaTitle, u'Beneficiário')
+        self.canvas.drawString(self.width - (35 * mm) - (30 * mm) - (40 * mm) + self.space, (((linhaInicial + 1) * self.heightLine)) + self.deltaTitle, u'Agência/Código Beneficiário')
+        self.canvas.drawString(self.width - (35 * mm) - (30 * mm) + self.space, (((linhaInicial + 1)*self.heightLine)) + self.deltaTitle, 'Data Documento')
+        self.canvas.drawString(self.width - (35 * mm) + self.space, (((linhaInicial + 1)*self.heightLine)) + self.deltaTitle, 'Vencimento')
 
-        self.canvas.drawString(0, (((linhaInicial + 0)*self.heightLine)) + self.deltaTitle, 'Sacado')
-        self.canvas.drawString(self.width - (45 * mm) - (30 * mm) - (30 * mm) + self.space, (((linhaInicial + 0) * self.heightLine)) + self.deltaTitle, 'Nosso Número')
-        self.canvas.drawString(self.width - (45 * mm) - (30 * mm) + self.space, (((linhaInicial + 0)*self.heightLine)) + self.deltaTitle, 'N. do documento')
-        self.canvas.drawString(self.width - (45 * mm) + self.space, (((linhaInicial + 0)*self.heightLine)) + self.deltaTitle, 'Valor Documento')
+        self.canvas.drawString(0, (((linhaInicial - 1)*self.heightLine)) + self.deltaTitle, 'Pagador')
+        self.canvas.drawString(self.width - (35 * mm) - (30 * mm) - (40 * mm) + self.space, (((linhaInicial - 1) * self.heightLine)) + self.deltaTitle, 'Nosso Número')
+        self.canvas.drawString(self.width - (35 * mm) - (30 * mm) + self.space, (((linhaInicial - 1)*self.heightLine)) + self.deltaTitle, 'N. do documento')
+        self.canvas.drawString(self.width - (35 * mm) + self.space, (((linhaInicial - 1)*self.heightLine)) + self.deltaTitle, 'Valor Documento')
 
-        self.canvas.drawString(0, (((linhaInicial - 1) * self.heightLine)) + self.deltaTitle, 'Demonstrativo')
-        self.canvas.drawRightString(self.width, (((linhaInicial - 1) * self.heightLine)) + self.deltaTitle, 'Autenticação Mecânica')
+        self.canvas.drawString(0, (((linhaInicial)*self.heightLine)) + self.deltaTitle, 'Endereço Beneficiário/Sacador Avalista')
+
+        self.canvas.drawString(0, (((linhaInicial - 2) * self.heightLine)) + self.deltaTitle, 'Demonstrativo')
+        self.canvas.drawRightString(self.width, (((linhaInicial - 2) * self.heightLine)) + self.deltaTitle, 'Autenticação Mecânica')
 
         # Values
         self.canvas.setFont('Helvetica', 9)
         heighFont = 9 + 1
 
         self.canvas.drawString(0 + self.space, (((linhaInicial + 1) * self.heightLine)) + self.space, self.boleto.cedente)
-        self.canvas.drawString(self.width - (45 * mm) - (30 * mm) - (30 * mm) + self.space, (((linhaInicial + 1) * self.heightLine)) + self.space, self.boleto.cedente_agencia_codigo)
-        self.canvas.drawString(self.width - (45 * mm) - (30 * mm) + self.space, (((linhaInicial + 1)*self.heightLine)) + self.space,  _date_format(self.boleto.data_documento))
-        self.canvas.drawString(self.width - (45 * mm) + self.space, (((linhaInicial + 1) * self.heightLine)) + self.space,  _date_format(self.boleto.data_vencimento))
+        self.canvas.drawString(self.width - (35 * mm) - (30 * mm) - (40 * mm) + self.space, (((linhaInicial + 1) * self.heightLine)) + self.space, self.boleto.cedente_agencia_codigo)
+        self.canvas.drawString(self.width - (35 * mm) - (30 * mm) + self.space, (((linhaInicial + 1)*self.heightLine)) + self.space,  _date_format(self.boleto.data_documento))
+        self.canvas.drawString(self.width - (35 * mm) + self.space, (((linhaInicial + 1) * self.heightLine)) + self.space,  _date_format(self.boleto.data_vencimento))
 
         valorDocumento = _price_format(self.boleto.valor_documento)
 
-        self.canvas.drawString(0 + self.space, (((linhaInicial + 0) * self.heightLine)) + self.space, self.boleto.sacado[0])
-        self.canvas.drawString(self.width - (45 * mm) - (30 * mm) - (30 * mm) + self.space, (((linhaInicial + 0) * self.heightLine)) + self.space, self.boleto.nosso_numero_formatado)
-        self.canvas.drawString(self.width - (45 * mm) - (30 * mm) + self.space, (((linhaInicial + 0) * self.heightLine)) + self.space, self.boleto.numero_documento)
-        self.canvas.drawString(self.width - (45 * mm) + self.space, (((linhaInicial + 0) * self.heightLine)) + self.space, valorDocumento)
+        self.canvas.drawString(0 + self.space, (((linhaInicial -1) * self.heightLine)) + self.space, self.boleto.sacado[0])
+        self.canvas.drawString(self.width - (35 * mm) - (30 * mm) - (40 * mm) + self.space, (((linhaInicial -1) * self.heightLine)) + self.space, self.boleto.nosso_numero_formatado)
+        self.canvas.drawString(self.width - (35 * mm) - (30 * mm) + self.space, (((linhaInicial -1) * self.heightLine)) + self.space, self.boleto.numero_documento)
+        self.canvas.drawString(self.width - (35 * mm) + self.space, (((linhaInicial -1) * self.heightLine)) + self.space, valorDocumento)
+
+        self.canvas.drawString(0 + self.space, (((linhaInicial) * self.heightLine)) + self.space, self.boleto.endereco_cedente)
 
         for l in self.boleto.demonstrativo:
-            self.canvas.drawString(2 * self.space, (((linhaInicial - 1) * self.heightLine)) - (self.boleto.demonstrativo.index(l) * heighFont), l)
+            self.canvas.drawString(2 * self.space, (((linhaInicial - 2) * self.heightLine)) - (self.boleto.demonstrativo.index(l) * heighFont), l)
 
         self.canvas.restoreState()
 
@@ -148,10 +175,10 @@ class BoletoLayout(object):
         self.canvas.setLineWidth(2)
         self._horizontal_line(0, y, self.width)
         self.canvas.drawString(self.width - (45*mm) + self.space, y+self.space, 'Código de Baixa')
-        self.canvas.drawString(0, y + self.space, 'Sacador / Avalista')
+        self.canvas.drawString(0, y + self.space, 'Sacador Avalista: ' + self.boleto.sacador_avalista )
 
         y += self.heightLine
-        self.canvas.drawString(0, y + self.deltaTitle, 'Sacado')
+        self.canvas.drawString(0, y + self.deltaTitle, 'Pagador')
 
         # Linha grossa dividindo o Sacado
         y += self.heightLine
@@ -186,7 +213,7 @@ class BoletoLayout(object):
         y += self.heightLine
         self._horizontal_line(self.width - (45*mm), y, 45*mm)
         self.canvas.drawString(self.width - (45*mm) + self.space, y + self.deltaTitle, '(-) Descontos/Abatimentos')
-        self.canvas.drawString(0, y + self.deltaTitle, 'Instruções')
+        self.canvas.drawString(0, y + self.deltaTitle, u'Instruções de responsabilidade do BENEFICIÁRIO. Qualquer dúvida sobre este boleto, contate o BENEFICIÁRIO.')
 
         self.canvas.setFont('Helvetica', self.fontSizeValue)
         for l in self.boleto.instrucoes:
@@ -248,8 +275,8 @@ class BoletoLayout(object):
         # Linha horizontal com primeiro campo Cedente
         y += self.heightLine
         self._horizontal_line(0, y, self.width)
-        self.canvas.drawString(0, y + self.deltaTitle, 'Cedente')
-        self.canvas.drawString(self.width - (45*mm) + self.space, y + self.deltaTitle, 'Agência/Código cedente')
+        self.canvas.drawString(0, y + self.deltaTitle, 'Beneficiário')
+        self.canvas.drawString(self.width - (45*mm) + self.space, y + self.deltaTitle, u'Agência/Código Beneficiário')
 
         self.canvas.setFont('Helvetica', self.fontSizeValue)
         self.canvas.drawString(0, y + self.space, self.boleto.cedente)
